@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:server_app/providers/bottom_nav_provider.dart';
-import 'package:server_app/screens/home_screen.dart';
+import 'package:server_app/providers/server_provider.dart';
 import 'package:server_app/screens/main_screen.dart';
 
 void main() {
@@ -9,6 +9,9 @@ void main() {
     MultiProvider(providers: [
       ChangeNotifierProvider(
         create: (context) => BottomNavProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => ServerProvider(),
       ),
     ], child: const MyApp()),
   );
