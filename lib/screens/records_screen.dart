@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:server_app/components/custome_textfield.dart';
-import 'package:server_app/widgets/listserver_card.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+import '../widgets/record_card.dart';
+
+class RecordsScreen extends StatefulWidget {
+  const RecordsScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<RecordsScreen> createState() => _RecordsScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _RecordsScreenState extends State<RecordsScreen> {
   void _showForm() {
     showModalBottomSheet(
         context: context,
@@ -23,25 +24,22 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   CustomTextField(
-                    hintText: 'Server Name',
+                    hintText: 'Status',
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   CustomTextField(
-                    hintText: 'Host',
+                    hintText: 'Cammand',
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   CustomTextField(
-                    hintText: 'api forlder',
+                    hintText: 'Time Value',
                   ),
                   SizedBox(
                     height: 10,
-                  ),
-                  CustomTextField(
-                    hintText: 'port',
                   ),
                   ElevatedButton(
                       onPressed: () {},
@@ -55,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       side: BorderSide(color: Colors.blue)))),
-                      child: Text('Add New Server'))
+                      child: Text('Add New Record'))
                 ],
               ),
             ),
@@ -67,23 +65,21 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return (Scaffold(
       appBar: AppBar(
-        title: Text('Server List'),
+        title: Text('Records'),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             _showForm();
           },
-          backgroundColor: Color.fromARGB(255, 168, 86, 194),
           icon: Icon(Icons.add),
-          label: Text(
-            'Create Server',
-          )),
+          backgroundColor: Color.fromARGB(255, 168, 86, 194),
+          label: Text('Create Record')),
       body: ListView.separated(
           padding: EdgeInsets.all(15),
           physics: BouncingScrollPhysics(),
           itemBuilder: ((context, index) {
-            return ListCard();
+            return RecordCard();
           }),
           separatorBuilder: (context, index) {
             return SizedBox(
