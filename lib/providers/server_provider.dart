@@ -56,6 +56,7 @@ class ServerProvider extends ChangeNotifier {
   Future<void> refreservers() async {
     _allServers = await SqlHelper.getServers();
     notifyListeners();
+    print("object");
   }
 
   Future<void> deleteRoom(BuildContext context, int id, String name) async {
@@ -75,7 +76,6 @@ class ServerProvider extends ChangeNotifier {
     _hController.text = model.host.toString();
     _apiController.text = model.api.toString();
     _portController.text = model.port.toString();
-
     notifyListeners();
   }
 

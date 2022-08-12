@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:server_app/components/custom_form.dart';
+import 'package:server_app/providers/record_provider.dart';
 import 'package:server_app/providers/server_provider.dart';
 import 'package:server_app/screens/records_screen.dart';
 import 'package:server_app/utils/util_function.dart';
@@ -38,23 +39,35 @@ class _HomeScreenState extends State<HomeScreen> {
             label: const Text(
               'Create Server',
             )),
-        body: ListView.separated(
-            padding: EdgeInsets.all(15),
-            physics: BouncingScrollPhysics(),
-            itemBuilder: ((context, index) {
-              return ListCard(
-                onTap: () {
-                  UtilFunction.navigateTo(context, RecordsScreen());
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            child: ListView.separated(
+                padding: EdgeInsets.all(15),
+                physics: BouncingScrollPhysics(),
+                itemBuilder: ((context, index) {
+                  return ListCard(
+                    onTap: () {
+                      Provider.of<RecordProvider>(context, listen: false)
+                          .setTextControllers(value.allServers[index]);
+                      UtilFunction.navigateTo(
+                          context,
+                          RecordsScreen(
+                            model: value.allServers[index],
+                          ));
+                    },
+                    model: value.allServers[index],
+                  );
+                }),
+                separatorBuilder: (context, index) {
+                  return SizedBox(
+                    height: 10,
+                  );
                 },
-                model: value.allServers[index],
-              );
-            }),
-            separatorBuilder: (context, index) {
-              return SizedBox(
-                height: 10,
-              );
-            },
-            itemCount: value.allServers.length),
+                itemCount: value.allServers.length),
+          ),
+        ),
       ),
     ));
   }

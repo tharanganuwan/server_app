@@ -1,6 +1,6 @@
 class RecordModel {
   int? id;
-  String? status;
+  int? status;
   String? cammand;
   String? timevalue;
   String? description;

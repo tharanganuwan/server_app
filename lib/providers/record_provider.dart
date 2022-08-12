@@ -1,7 +1,11 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:server_app/model/record_model.dart';
 import 'package:server_app/model/server_model.dart';
+import 'package:server_app/providers/server_provider.dart';
 import 'package:server_app/screens/controllers/sql_helper.dart';
+import 'package:server_app/screens/home_screen.dart';
+import 'package:server_app/utils/util_function.dart';
 
 class RecordProvider extends ChangeNotifier {
   final TextEditingController _statusController = TextEditingController();
@@ -18,6 +22,13 @@ class RecordProvider extends ChangeNotifier {
 
   final TextEditingController _runtimeController = TextEditingController();
   TextEditingController get runtimeController => _runtimeController;
+
+  late int _status;
+  int get status => _status;
+
+  void setStatus(int s) {
+    _status = s;
+  }
 
   Future<void> addNewRecord(BuildContext context) async {
     //showing a snackbar if title empty
@@ -80,7 +91,8 @@ class RecordProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setTextControllers(RecordModel model) {
+  void setTextControllers(ServerModel model) {
+    _status = model.status!;
     _statusController.text = model.status.toString();
     _cammandController.text = model.cammand.toString();
     _timeController.text = model.timevalue.toString();
@@ -90,20 +102,30 @@ class RecordProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateRecord(BuildContext context, RecordModel model) async {
+  Future<void> updateRecord(BuildContext context, ServerModel model) async {
     var i = await SqlHelper.updateRecords(
       model.id!.toInt(),
-      _statusController.text.toString(),
+      _status,
       _cammandController.text.toString(),
       _timeController.text.toString(),
       _desController.text.toString(),
       _runtimeController.text.toString(),
     );
-    print(i);
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.SUCCES,
+      animType: AnimType.BOTTOMSLIDE,
+      title: "Success",
+      desc: "update success",
+      btnOkOnPress: () {},
+    ).show();
 
-    clearControllers();
-    await refreRecords();
+    // clearControllers();
+    // await refreRecords();
+
     notifyListeners();
-    Navigator.pop(context);
+    Future.delayed(const Duration(seconds: 4), () {
+      UtilFunction.navigateTo(context, HomeScreen());
+    });
   }
 }

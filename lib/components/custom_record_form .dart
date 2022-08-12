@@ -9,10 +9,10 @@ import '../model/record_model.dart';
 
 class ShowRecordForm {
   static void showForm(BuildContext context, RecordModel? model) {
-    if (model != null) {
-      Provider.of<RecordProvider>(context, listen: false)
-          .setTextControllers(model);
-    }
+    // if (model != null) {
+    //   Provider.of<RecordProvider>(context, listen: false)
+    //       .setTextControllers(model);
+    // }
     showModalBottomSheet(
         context: context,
         builder: (_) {
@@ -62,10 +62,10 @@ class ShowRecordForm {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        print(model == null);
-                        model == null
-                            ? value.addNewRecord(context)
-                            : value.updateRecord(context, model);
+                        // print(model == null);
+                        // model == null
+                        //     ? value.addNewRecord(context)
+                        //     : value.updateRecord(context, model);
                       },
                       style: ButtonStyle(
                           foregroundColor:

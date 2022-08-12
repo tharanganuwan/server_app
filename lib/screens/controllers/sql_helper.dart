@@ -28,15 +28,12 @@ class SqlHelper {
           " host TEXT,"
           "api TEXT,"
           "port TEXT,"
+          "status tinyint(1),"
+          "cammand TEXT,"
+          "timevalue TEXT,"
+          "description TEXT,"
+          "commandruntime TEXT,"
           "createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)");
-      await database.execute("""CREATE TABLE records(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            status TEXT,
-            cammand TEXT,
-            timevalue TEXT,
-            description TEXT,
-            commandruntime TEXT,
-            createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)""");
     } catch (e) {
       print(e);
     }
@@ -47,7 +44,17 @@ class SqlHelper {
       String name, String host, String api, String port) async {
     final db = await initDB();
 
-    final data = {'name': name, 'host': host, 'api': api, 'port': port};
+    final data = {
+      'name': name,
+      'host': host,
+      'api': api,
+      'port': port,
+      'status': 0,
+      'cammand': "",
+      'timevalue': "",
+      'description': "",
+      'commandruntime': "",
+    };
 
     final id = await db.insert('server', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
@@ -82,7 +89,7 @@ class SqlHelper {
   static Future<List<RecordModel>> getRecords() async {
     final db = await initDB();
 
-    final result = await db.query('records', orderBy: "id");
+    final result = await db.query('server', orderBy: "id");
     return result.map((e) => RecordModel.fromJson(e)).toList();
   }
 
@@ -116,7 +123,7 @@ class SqlHelper {
   }
 
   //update records
-  static Future<int> updateRecords(int id, String status, String cammand,
+  static Future<int> updateRecords(int id, int status, String cammand,
       String timevalue, String description, String commandruntime) async {
     final db = await initDB();
 
@@ -129,7 +136,7 @@ class SqlHelper {
       'createdAt': DateTime.now().toString()
     };
     final resultid =
-        await db.update('records', data, where: "id=?", whereArgs: [id]);
+        await db.update('server', data, where: "id=?", whereArgs: [id]);
     return resultid;
   }
 }
