@@ -49,7 +49,6 @@ class ShowForm {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        print(model == null);
                         model == null
                             ? value.addNewServer(context)
                             : value.updateSever(context, model);
@@ -57,8 +56,6 @@ class ShowForm {
                       style: ButtonStyle(
                           foregroundColor:
                               MaterialStateProperty.all<Color>(Colors.white),
-                          // backgroundColor:
-                          //     MaterialStateProperty.all<Color>(Colors.red),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(

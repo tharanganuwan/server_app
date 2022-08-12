@@ -16,7 +16,6 @@ class ServerProvider extends ChangeNotifier {
   TextEditingController get portController => _portController;
 
   Future<void> addNewServer(BuildContext context) async {
-    //showing a snackbar if title empty
     if (_snameController.text.isEmpty) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Fill the field")));
@@ -88,7 +87,6 @@ class ServerProvider extends ChangeNotifier {
       _apiController.text.toString(),
       _portController.text.toString(),
     );
-    print(i);
 
     clearControllers();
     await refreservers();
