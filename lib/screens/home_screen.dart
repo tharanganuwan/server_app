@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:server_app/components/custom_form.dart';
 import 'package:server_app/components/custome_textfield.dart';
 import 'package:server_app/providers/server_provider.dart';
+import 'package:server_app/screens/records_screen.dart';
+import 'package:server_app/utils/util_function.dart';
 import 'package:server_app/widgets/listserver_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -42,6 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
             physics: BouncingScrollPhysics(),
             itemBuilder: ((context, index) {
               return ListCard(
+                onTap: () {
+                  UtilFunction.navigateTo(context, RecordsScreen());
+                },
                 model: value.allServers[index],
               );
             }),

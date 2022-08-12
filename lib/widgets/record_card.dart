@@ -17,11 +17,19 @@ class RecordCard extends StatelessWidget {
             SizedBox(
               width: 5,
             ),
-            Text('cammand'),
+            Text('Cammand'),
             SizedBox(
               width: 5,
             ),
-            Text('description'),
+            // Text('Time Value'),
+            // SizedBox(
+            //   width: 5,
+            // ),
+            // Text('Description'),
+            // SizedBox(
+            //   width: 5,
+            // ),
+            // Text('Commanda Run Time'),
           ],
         ),
         trailing: SizedBox(
