@@ -1,3 +1,4 @@
+import 'package:server_app/model/record_model.dart';
 import 'package:server_app/model/server_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -10,7 +11,7 @@ class SqlHelper {
 //on iso,documents
     final dbPath = await getDatabasesPath();
     //best prcatice
-    final path = join(dbPath, 'fsm.db');
+    final path = join(dbPath, 'fsmm.db');
 
     return openDatabase(path, version: 1,
         onCreate: (Database database, int version) async {
@@ -21,18 +22,27 @@ class SqlHelper {
   //create table
   static Future<void> createTables(Database database) async {
     try {
-      await database.execute("""CREATE TABLE server(
+      await database.execute("CREATE TABLE server("
+          " id INTEGER PRIMARY KEY AUTOINCREMENT,"
+          "name TEXT,"
+          " host TEXT,"
+          "api TEXT,"
+          "port TEXT,"
+          "createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)");
+      await database.execute("""CREATE TABLE records(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT,
-            host TEXT,
-            api TEXT,
-            port TEXT,
+            status TEXT,
+            cammand TEXT,
+            timevalue TEXT,
+            description TEXT,
+            commandruntime TEXT,
             createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)""");
     } catch (e) {
       print(e);
     }
   }
 
+//create server
   static Future<int> createServer(
       String name, String host, String api, String port) async {
     final db = await initDB();
@@ -51,10 +61,42 @@ class SqlHelper {
     return result.map((e) => ServerModel.fromJson(e)).toList();
   }
 
+//create records
+  static Future<int> createRecords(String status, String cammand,
+      String timevalue, String description, String commandruntime) async {
+    final db = await initDB();
+
+    final data = {
+      'status': status,
+      'cammand': cammand,
+      'timevalue': timevalue,
+      'description': description,
+      'commandruntime': commandruntime
+    };
+
+    final id = await db.insert('records', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
+  }
+
+  static Future<List<RecordModel>> getRecords() async {
+    final db = await initDB();
+
+    final result = await db.query('records', orderBy: "id");
+    return result.map((e) => RecordModel.fromJson(e)).toList();
+  }
+
   static Future<void> deleteServer(int id) async {
     final db = await initDB();
 
     await db.delete('server', where: "id=?", whereArgs: [id]);
+  }
+
+//update records
+  static Future<void> deleteRecords(int id) async {
+    final db = await initDB();
+
+    await db.delete('records', where: "id=?", whereArgs: [id]);
   }
 
   static Future<int> updateServer(
@@ -70,6 +112,24 @@ class SqlHelper {
     };
     final resultid =
         await db.update('server', data, where: "id=?", whereArgs: [id]);
+    return resultid;
+  }
+
+  //update records
+  static Future<int> updateRecords(int id, String status, String cammand,
+      String timevalue, String description, String commandruntime) async {
+    final db = await initDB();
+
+    final data = {
+      'status': status,
+      'cammand': cammand,
+      'timevalue': timevalue,
+      'description': description,
+      'commandruntime': commandruntime,
+      'createdAt': DateTime.now().toString()
+    };
+    final resultid =
+        await db.update('records', data, where: "id=?", whereArgs: [id]);
     return resultid;
   }
 }
